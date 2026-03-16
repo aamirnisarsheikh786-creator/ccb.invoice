@@ -16,6 +16,11 @@ let items=[{name:"",qty:1,price:0}]
 
 let customer={name:"",phone:"",address:""}
 
+let paidAmount=0
+let total=0
+let balance=0
+
+
 function render(){
 
 let rows=""
@@ -26,11 +31,14 @@ rows+=`
 
 <div class="item-row">
 
-<input value="${i.name}" placeholder="Item" oninput="items[${index}].name=this.value">
+<input value="${i.name}" placeholder="Item"
+oninput="items[${index}].name=this.value">
 
-<input type="number" value="${i.qty}" oninput="items[${index}].qty=this.value">
+<input type="number" value="${i.qty}"
+oninput="items[${index}].qty=this.value">
 
-<input type="number" value="${i.price}" placeholder="Rate" oninput="items[${index}].price=this.value">
+<input type="number" value="${i.price}" placeholder="Rate"
+oninput="items[${index}].price=this.value">
 
 </div>
 
@@ -44,13 +52,17 @@ document.getElementById("app").innerHTML=`
 
 <div class="card">
 
-<input placeholder="Customer Name" oninput="customer.name=this.value">
+<input placeholder="Customer Name"
+oninput="customer.name=this.value">
 
-<input type="tel" inputmode="numeric" pattern="[0-9]*"
+<input type="tel"
+inputmode="numeric"
+pattern="[0-9]*"
 placeholder="Customer Phone"
 oninput="customer.phone=this.value">
 
-<input placeholder="Customer Address" oninput="customer.address=this.value">
+<input placeholder="Customer Address"
+oninput="customer.address=this.value">
 
 </div>
 
@@ -66,7 +78,11 @@ ${rows}
 
 <input id="paid" type="number" placeholder="Paid Amount">
 
-<button class="btn-preview" onclick="previewInvoice()">Preview & Download</button>
+<button class="btn-preview" onclick="previewInvoice()">Preview Invoice</button>
+
+<button class="btn-download" onclick="downloadInvoice()">Download PDF</button>
+
+<button class="btn-whatsapp" onclick="sendWhatsapp()">Send WhatsApp</button>
 
 </div>
 
@@ -82,27 +98,39 @@ render()
 
 }
 
-function totalAmount(){
+function calculate(){
 
-let t=0
+paidAmount=document.getElementById("paid")?.value || 0
+
+total=0
 
 items.forEach(i=>{
 
-t+=i.qty*i.price
+total+=i.qty*i.price
 
 })
 
-return t
+balance=total-paidAmount
 
 }
 
-async function previewInvoice(){
 
-const paid=document.getElementById("paid").value||0
+function previewInvoice(){
 
-const total=totalAmount()
+calculate()
 
-const balance=total-paid
+alert(
+"Grand Total: Rs "+total+
+"\nPaid: Rs "+paidAmount+
+"\nDue Balance: Rs "+balance
+)
+
+}
+
+
+async function downloadInvoice(){
+
+calculate()
 
 const {jsPDF}=window.jspdf
 
@@ -118,6 +146,7 @@ doc.text(company.name,50,20)
 
 doc.setFontSize(10)
 doc.setTextColor(80)
+
 doc.text(company.address,50,27)
 doc.text("Mob: "+company.phone,50,32)
 doc.text(company.email,50,37)
@@ -166,7 +195,7 @@ doc.text("Rs. "+total,195,y,{align:"right"})
 
 doc.setTextColor(46,125,50)
 doc.text("Paid Amount:",140,y+8)
-doc.text("Rs. "+paid,195,y+8,{align:"right"})
+doc.text("Rs. "+paidAmount,195,y+8,{align:"right"})
 
 doc.setFillColor(165,0,0)
 doc.rect(135,y+12,65,10,"F")
@@ -180,24 +209,50 @@ doc.text("Thank you for your business!",105,y+40,{align:"center"})
 
 doc.save(customer.name+"_invoice.pdf")
 
-sendWhatsapp(total)
-
 }
 
-function sendWhatsapp(total){
 
-let msg=`Invoice from CITY CHOICE BAKERS
+function sendWhatsapp(){
 
-Customer: ${customer.name}
-Total: Rs ${total}
+calculate()
 
-Thank you for your purchase.`
+let msg=""
+
+msg+="CITY CHOICE BAKERS\n"
+msg+="Gulmarg Road Magam (Branch Kunzer)\n"
+msg+="Mob: 7006592704,9622578770\n"
+msg+="citychoicebakers@gmail.com\n\n"
+
+msg+="Customer Details\n"
+msg+="Name: "+customer.name+"\n"
+msg+="Phone: "+customer.phone+"\n"
+msg+="Address: "+customer.address+"\n\n"
+
+msg+="Items\n"
+
+items.forEach(i=>{
+
+msg+=
+i.name+
+" | Qty:"+i.qty+
+" | Price:"+i.price+
+" | Total:"+(i.qty*i.price)
++"\n"
+
+})
+
+msg+="\nSubtotal: Rs "+total+"\n"
+msg+="Paid: Rs "+paidAmount+"\n"
+msg+="Pending Balance: Rs "+balance+"\n\n"
+
+msg+="Thank you for your business!"
 
 let url="https://wa.me/"+customer.phone+"?text="+encodeURIComponent(msg)
 
 window.open(url)
 
 }
+
 
 function loadImage(url){
 
