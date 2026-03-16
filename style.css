@@ -1,67 +1,124 @@
 body{
-background:#111827;
-font-family:Segoe UI;
+background:#0f172a;
+font-family:Segoe UI, Arial, sans-serif;
 color:white;
+margin:0;
 }
 
+/* app container */
+
 #app{
-max-width:420px;
+max-width:480px;
 margin:auto;
 padding:20px;
 }
 
+/* header */
+
 .header{
 text-align:center;
-font-size:22px;
-font-weight:bold;
-margin-bottom:20px;
+font-size:28px;
+font-weight:700;
+margin-bottom:25px;
+color:#ef4444;
+letter-spacing:1px;
 }
+
+/* card layout */
 
 .card{
 background:#1f2937;
-padding:15px;
-border-radius:10px;
-margin-bottom:15px;
+padding:20px;
+border-radius:16px;
+margin-bottom:20px;
+box-shadow:0 8px 20px rgba(0,0,0,0.4);
 }
+
+/* inputs */
 
 input{
 width:100%;
-padding:12px;
-margin-top:8px;
+padding:16px;
+margin-top:12px;
 background:#111827;
 border:1px solid #374151;
-border-radius:8px;
+border-radius:12px;
 color:white;
+font-size:16px;
+outline:none;
+transition:0.2s;
 }
+
+input:focus{
+border-color:#ef4444;
+box-shadow:0 0 0 2px rgba(239,68,68,0.2);
+}
+
+/* buttons */
 
 button{
 width:100%;
-padding:12px;
-margin-top:10px;
-border-radius:8px;
-font-weight:bold;
+padding:16px;
+margin-top:14px;
+border-radius:12px;
+font-weight:600;
+font-size:16px;
+border:none;
 cursor:pointer;
+transition:0.2s;
 }
+
+/* buttons colors */
 
 .btn-add{
 background:#374151;
 }
 
 .btn-preview{
-background:#2563eb;
+background:#ef4444;
 }
 
 .btn-download{
-background:#16a34a;
+background:#dc2626;
 }
 
 .btn-whatsapp{
 background:#25D366;
+color:black;
 }
+
+/* hover effect */
+
+button:hover{
+transform:scale(1.03);
+}
+
+/* item rows */
 
 .item-row{
 display:grid;
-grid-template-columns:1fr 60px 80px;
-gap:8px;
-margin-top:8px;
+grid-template-columns:1fr 90px 110px;
+gap:12px;
+margin-top:14px;
+}
+
+/* item inputs bigger */
+
+.item-row input{
+padding:14px;
+font-size:15px;
+}
+
+/* mobile spacing */
+
+@media(max-width:480px){
+
+#app{
+padding:18px;
+}
+
+.header{
+font-size:24px;
+}
+
 }
