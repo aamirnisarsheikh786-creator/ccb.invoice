@@ -40,6 +40,7 @@ padding:12px;
 margin-top:10px;
 border-radius:8px;
 font-weight:bold;
+cursor:pointer;
 }
 
 .btn-add{
@@ -47,7 +48,15 @@ background:#374151;
 }
 
 .btn-preview{
-background:#dc2626;
+background:#2563eb;
+}
+
+.btn-download{
+background:#16a34a;
+}
+
+.btn-whatsapp{
+background:#25D366;
 }
 
 .item-row{
